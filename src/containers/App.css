@@ -49,6 +49,10 @@ ol, ul {
   margin-left: 20px;
 }
 
+.game-analytics {
+  margin-left: 40px;
+}
+
 .winner-winner-chicken-dinner {
   background-color: #ffff00
 }

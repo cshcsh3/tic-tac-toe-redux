@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import './App.css';
 import store from "../store";
 import Board from "../components/Board";
+import Analytics from "../components/Analytics";
 import { makeMove, listOrder, jumpTo } from "../actions";
 import { calculateWinner } from "../shared/calculateWinner";
+import { writeAnalytics } from "../db/analytics";
 
 class App extends Component {
   handleClick(i) {
@@ -16,6 +18,10 @@ class App extends Component {
    
   jumpTo(index) {
     store.dispatch(jumpTo(index));
+  }
+
+  weHaveAWinner(winner) {
+    writeAnalytics(winner[0], winner[1].toString());
   }
 
   render() {
@@ -48,6 +54,7 @@ class App extends Component {
     let status;
     if (winner) {
       status = 'Winner: ' + winner[0];
+      this.weHaveAWinner(winner);
     } else {
       if (!current.squares.includes(null)) {
         status = 'Draw';
@@ -57,7 +64,7 @@ class App extends Component {
     }
 
     let listOrder = (state.order) ? "Order move list to be DESC" : "Order move list to be ASC";
-    
+
     return (
       <div className="game">
         <div className="game-board">
@@ -68,6 +75,9 @@ class App extends Component {
           
           <button onClick={() => this.handleList()}>{listOrder}</button>
           <ol>{moves}</ol>
+        </div>
+        <div className="game-analytics">
+          <Analytics />
         </div>
       </div>
     );

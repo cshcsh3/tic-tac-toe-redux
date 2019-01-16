@@ -4,6 +4,19 @@ import './index.css';
 import App from './containers/App';
 import * as serviceWorker from './serviceWorker';
 import store from "./store";
+import * as firebase from 'firebase';
+
+// Initialize Firebase
+var config = {
+	apiKey: "AIzaSyAtPSuMAEBEveXAcwYSOUQJUDzJcXkycCc",
+	authDomain: "tic-tac-toe-3c429.firebaseapp.com",
+	databaseURL: "https://tic-tac-toe-3c429.firebaseio.com",
+	projectId: "tic-tac-toe-3c429",
+	storageBucket: "tic-tac-toe-3c429.appspot.com",
+	messagingSenderId: "494469665190"
+};
+
+firebase.initializeApp(config);
 
 const render = () => {
 	fancyLog();

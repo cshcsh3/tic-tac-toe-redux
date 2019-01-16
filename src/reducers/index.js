@@ -20,18 +20,21 @@ export default function reducer(state = initialState, action) {
 			let step = state.step;
 			let xIsNext = state.xIsNext;
 
+			// Add 1 to index
 			let index = step + 1;
 			let history = state.history.slice(0, step + 1);
 			let current = history[history.length - 1];
 			let squares = current.squares.slice();
 			let position = current.position.slice();
 
+			// Do nothing and return state if winner exists or square already filled
 			if (calculateWinner(squares) || squares[i]) {
      			 return {
      			 	...state
      			 };
     		}
 			
+			// Set position
 		    if (i >= 0 && i < 3) {
 		      position[0] = i;
 		      position[1] = 0;
@@ -45,13 +48,17 @@ export default function reducer(state = initialState, action) {
 		      position[1] = 2;
 		    }
 		    
+		    // Set square value
 			if (xIsNext) {
 				squares[i] = "X";
 			} else {
 				squares[i] = "O"
 			}
 
+			// Toggle next player
 			xIsNext = !xIsNext;
+
+			// Add 1 to step
 			step = step + 1;
 
 			return {
@@ -66,6 +73,7 @@ export default function reducer(state = initialState, action) {
 			}
 
 		case actionTypes.LIST_ORDER:
+			// Toggle move list order
 			let order = state.order;
 			order = !order;
 
@@ -75,6 +83,7 @@ export default function reducer(state = initialState, action) {
 			}
 
 		case actionTypes.JUMP_TO:
+			// Jump to appropriate step and ensure next player is correct
 			xIsNext = (action.index%2 === 0);
 
 			return {
