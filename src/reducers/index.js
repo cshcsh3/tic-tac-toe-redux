@@ -1,5 +1,6 @@
-import * as actionTypes from "../actions";
+import * as actions from "../actions";
 import { calculateWinner } from "../shared/calculateWinner";
+import { writeAnalytics } from "../db/analytics"
 
 const initialState = {
 	history: [{
@@ -10,11 +11,13 @@ const initialState = {
 	order: true,
 	step: 0,
 	xIsNext: true,
+	analytics: null, 
+	winner: null
 }
 
 export default function reducer(state = initialState, action) {
 	switch(action.type) {
-		case actionTypes.MAKE_MOVE:
+		case actions.MAKE_MOVE:
 			const { i } = action;
 
 			let step = state.step;
@@ -33,7 +36,7 @@ export default function reducer(state = initialState, action) {
      			 	...state
      			 };
     		}
-			
+
 			// Set position
 		    if (i >= 0 && i < 3) {
 		      position[0] = i;
@@ -72,7 +75,7 @@ export default function reducer(state = initialState, action) {
 						}])
 			}
 
-		case actionTypes.LIST_ORDER:
+		case actions.LIST_ORDER:
 			// Toggle move list order
 			let order = state.order;
 			order = !order;
@@ -82,7 +85,7 @@ export default function reducer(state = initialState, action) {
 				order: order
 			}
 
-		case actionTypes.JUMP_TO:
+		case actions.JUMP_TO:
 			// Jump to appropriate step and ensure next player is correct
 			xIsNext = (action.index%2 === 0);
 
@@ -91,6 +94,18 @@ export default function reducer(state = initialState, action) {
 				step: action.index,
 				xIsNext: xIsNext
 			}
+
+		case actions.READ_ANALYTICS:
+			return { 
+				...state, 
+				analytics: action.analytics 
+			}
+
+		// case actions.WRITE_ANALYTICS:
+		// 	return {
+		// 		...state,
+		// 		winner: action.winner
+		// 	}
 
 		default:
 			return state;

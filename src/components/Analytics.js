@@ -2,19 +2,25 @@ import React, { Component } from "react";
 import { readAnalytics } from "../db/analytics";
 
 class Analytics extends Component {
-	async getAnalytics() {
-		const analytics = await readAnalytics();
-		const rows = [];		
+	createRows() {
+		const analytics = this.props.analytics;
+		const rows = [];
 
-		for (var key in analytics) {
-			rows.push(<li key={key}>{ analytics[key].winner } won with { analytics[key].lines.toString() } </li>);
+		if (analytics) {
+			analytics.forEach((item, i) => {
+				rows.push(<li key={i}>{item.winner} won with {item.lines}</li>);
+			})
 		}
 
 		return rows;
 	}
 
 	render() {
-		return (<div></div>);
+		return (
+			<ul>
+				{this.createRows()}
+			</ul>
+		);
 	}
 }
 

@@ -3,28 +3,27 @@ import './App.css';
 import store from "../store";
 import Board from "../components/Board";
 import Analytics from "../components/Analytics";
-import { makeMove, listOrder, jumpTo } from "../actions";
+import * as actions from "../actions";
 import { calculateWinner } from "../shared/calculateWinner";
-import { writeAnalytics } from "../db/analytics";
+import { connect } from "react-redux";
 
 class App extends Component {
+
   handleClick(i) {
-    store.dispatch(makeMove(i));
+    store.dispatch(actions.makeMove(i));
   }
 
   handleList() {
-    store.dispatch(listOrder());
+    store.dispatch(actions.listOrder());
   }
    
   jumpTo(index) {
-    store.dispatch(jumpTo(index));
-  }
-
-  weHaveAWinner(winner) {
-    writeAnalytics(winner[0], winner[1].toString());
+    store.dispatch(actions.jumpTo(index));
   }
 
   render() {
+    const { analytics } = this.props;
+
     const state = store.getState();
     let history = state.history;
     let current = history[state.step];
@@ -54,7 +53,6 @@ class App extends Component {
     let status;
     if (winner) {
       status = 'Winner: ' + winner[0];
-      this.weHaveAWinner(winner);
     } else {
       if (!current.squares.includes(null)) {
         status = 'Draw';
@@ -77,11 +75,19 @@ class App extends Component {
           <ol>{moves}</ol>
         </div>
         <div className="game-analytics">
-          <Analytics />
+          <p>Latest 10 winnings</p>
+          <Analytics analytics={analytics}/>
         </div>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    ...state,
+    analytics: state.analytics
+  }
+}
+
+export default connect(mapStateToProps)(App);

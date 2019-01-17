@@ -1,6 +1,8 @@
 export const MAKE_MOVE = "MAKE_MOVE";
 export const LIST_ORDER = "LIST_ORDER";
 export const JUMP_TO = "JUMP_TO";
+export const READ_ANALYTICS = "READ_ANALYTICS";
+export const UPDATE_ANALYTICS = "UPDATE_ANALYTICS";
 
 export function makeMove(i) {
 	return {
@@ -31,3 +33,11 @@ export function jumpTo(index) {
 		xIsNext: true,
 	}
 }
+
+export function readAnalytics(analytics) {
+	return {
+		type: READ_ANALYTICS,
+		analytics
+	}
+}
+

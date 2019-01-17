@@ -1,4 +1,4 @@
-import * as firebase from 'firebase';
+import firebase from './firebase';
 
 export function writeAnalytics(winner, lines) {
 	var rootRef = firebase.database().ref('analytics/').push({
@@ -10,7 +10,7 @@ export function writeAnalytics(winner, lines) {
 }
 
 export async function readAnalytics() {
-	var rootRef = firebase.database().ref('analytics/');
+	var rootRef = firebase.database().ref('analytics/').limitToLast(10);
 	var json = {};
 	
 	await rootRef.once('value', function(snapshot) {
