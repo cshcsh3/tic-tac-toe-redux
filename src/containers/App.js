@@ -21,10 +21,26 @@ class App extends Component {
     store.dispatch(actions.jumpTo(index));
   }
 
-  render() {
-    const { analytics } = this.props;
+  componentDidMount() {
+    store.dispatch(actions.readAnalyticsRequest());
+  }
 
-    const state = store.getState();
+  componentDidUpdate() {
+    const { savedWinner, state } = this.props;
+
+    let history = state.history;
+    let current = history[state.step];
+    let winner = calculateWinner(current.squares);    
+
+    if (winner && !savedWinner) {
+      store.dispatch(actions.writeAnalyticsRequest(winner));
+      store.dispatch(actions.readAnalyticsRequest());
+    }
+  }
+
+  render() {
+    const { analytics, state } = this.props;
+
     let history = state.history;
     let current = history[state.step];
     let winner = calculateWinner(current.squares);
@@ -86,7 +102,9 @@ class App extends Component {
 const mapStateToProps = state => {
   return {
     ...state,
-    analytics: state.analytics
+    analytics: state.analytics,
+    savedWinner: state.savedWinner,
+    state: state
   }
 }
 

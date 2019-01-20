@@ -1,7 +1,7 @@
 import firebase from './firebase';
 
-export function writeAnalytics(winner, lines) {
-	var rootRef = firebase.database().ref('analytics/').push({
+export async function writeAnalytics(winner, lines) {
+	await firebase.database().ref('analytics/').push({
 		winner: winner,
 		lines: lines
 	});
@@ -21,5 +21,5 @@ export async function readAnalytics() {
 		});
 	});	
 
-	return json;	
+	return json;
 }

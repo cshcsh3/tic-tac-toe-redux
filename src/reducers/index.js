@@ -11,8 +11,9 @@ const initialState = {
 	order: true,
 	step: 0,
 	xIsNext: true,
-	analytics: null, 
-	winner: null
+	analytics: null,
+	readRequest: false,
+	savedWinner: null
 }
 
 export default function reducer(state = initialState, action) {
@@ -92,20 +93,28 @@ export default function reducer(state = initialState, action) {
 			return {
 				...state,
 				step: action.index,
+				savedWinner: null,
 				xIsNext: xIsNext
 			}
 
 		case actions.READ_ANALYTICS:
 			return { 
 				...state, 
+				readRequest: false,
 				analytics: action.analytics 
 			}
 
-		// case actions.WRITE_ANALYTICS:
-		// 	return {
-		// 		...state,
-		// 		winner: action.winner
-		// 	}
+		case actions.READ_ANALYTICS_REQUEST:
+			return {
+				...state,
+				readRequest: true
+			}
+
+		case actions.WRITE_ANALYTICS_REQUEST:
+			return {
+				...state,
+				savedWinner: action.savedWinner
+			}
 
 		default:
 			return state;

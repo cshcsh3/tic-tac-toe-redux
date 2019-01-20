@@ -2,7 +2,8 @@ export const MAKE_MOVE = "MAKE_MOVE";
 export const LIST_ORDER = "LIST_ORDER";
 export const JUMP_TO = "JUMP_TO";
 export const READ_ANALYTICS = "READ_ANALYTICS";
-export const UPDATE_ANALYTICS = "UPDATE_ANALYTICS";
+export const READ_ANALYTICS_REQUEST = "READ_ANALYTICS_REQUEST";
+export const WRITE_ANALYTICS_REQUEST ="WRITE_ANALYTICS_REQUEST";
 
 export function makeMove(i) {
 	return {
@@ -41,3 +42,16 @@ export function readAnalytics(analytics) {
 	}
 }
 
+export function readAnalyticsRequest() {
+	return {
+		type: READ_ANALYTICS_REQUEST,
+		readRequest: true
+	}
+}
+
+export function writeAnalyticsRequest(savedWinner) {
+	return {
+		type: WRITE_ANALYTICS_REQUEST,
+		savedWinner
+	}
+}
